@@ -20,7 +20,7 @@ def save_partition_log(partition_id, blocks_completed, elapsed_time):
         f.write(f"Partition: {partition_id}\n")
         f.write(f"Fecha: {fecha}\n")
         f.write(f"Bloques completados: {blocks_completed}\n")
-        f.write(f"Tiempo total de ejecucion: {elapsed_time:.2f} segundos\n")
+        f.write(f"Tiempo total de ejecución: {elapsed_time:.2f} segundos\n")
     return log_filename
 
 # Empaquetar los logs en un archivo ZIP y limpiar los archivos originales
@@ -44,6 +44,8 @@ def is_prime_frequency(X: int) -> bool:
     if X in (2, 3):
         return True
     if X % 2 == 0 or X % 3 == 0:
+        return False
+    if X % 5 == 0 or X % 7 == 0:
         return False
     if X % 6 == 1:
         cX = (X - 4) // 3
@@ -103,18 +105,37 @@ def safe_replace(tmp_file, final_file, retries=5, delay=0.1):
                 raise e
             time.sleep(delay)
 
+# Función para obtener el tamaño recomendado del bloque
+def get_recommended_block_size(number):
+    min_block_size = 100
+    max_block_size = 1000000
+
+    if number < 1000:
+        recommended_block_size = min_block_size
+    else:
+        recommended_block_size = int(math.log(number, 10) * 10000)
+
+    recommended_block_size = min(max_block_size, max(min_block_size, recommended_block_size))
+    
+    return recommended_block_size
+
 # Código principal
 if __name__ == '__main__':
     multiprocessing.freeze_support()
     setup_folders()
 
     try:
-        number = eval(input("Enter the number to analyze (e.g., 2**127 - 1): "))
-        partitions = int(input("Enter number of partitions (e.g., 30): "))
-        partition_id = int(input(f"Enter partition ID (0 to {partitions-1}): "))
-        block_size = int(input("Enter block size (e.g., 1000000): "))
+        number = eval(input("Ingresa el número a analizar (por ejemplo, 2**127 - 1): "))
+        partitions = int(input("Ingresa el número de particiones (por ejemplo, 30): "))
+        partition_id = int(input(f"Ingresa el ID de partición (0 a {partitions-1}): "))
+
+        # Calcular tamaño recomendado de bloque
+        recommended_block_size = get_recommended_block_size(number)
+        print(f"El tamaño recomendado de bloque es: {recommended_block_size}")
+
+        block_size = int(input(f"Ingresa el tamaño del bloque (puedes usar el recomendado {recommended_block_size}): "))
     except Exception as e:
-        print(f"Invalid input: {e}")
+        print(f"Entrada inválida: {e}")
         exit(1)
 
     progress_file = f"partition_{partition_id}_progress.txt"
@@ -139,12 +160,12 @@ if __name__ == '__main__':
             last_completed_block = int(lines[3].split(":")[1].strip())
 
             if str(number) != saved_number or block_size != saved_block_size or partitions != saved_partitions:
-                print("⚠️ Progress file mismatch detected! Aborting to prevent corruption.")
+                print("⚠️ ¡Se detectó un conflicto en el archivo de progreso! Aborting para evitar corrupción.")
                 exit(1)
 
             current_block = last_completed_block + 1
         except Exception as e:
-            print(f"⚠️ Could not parse progress file: {e}")
+            print(f"⚠️ No se pudo analizar el archivo de progreso: {e}")
             exit(1)
 
     if number % 6 == 1:
@@ -152,24 +173,24 @@ if __name__ == '__main__':
     else:
         cX = (number - 5) // 3
 
-    # Iniciar el procesamiento de bloques
+    composite_found = False
     try:
         for block_num in range(current_block, total_blocks):
             block_start = partition_start + block_num * block_size
             block_end = min(block_start + block_size - 1, partition_end)
 
-            print(f"Processing Partition {partition_id}, Block {block_num+1}/{total_blocks}... ", end="")
+            print(f"Procesando Partición {partition_id}, Bloque {block_num+1}/{total_blocks}... ", end="")
             block_ok = process_block(number, block_start, block_end, cX, limit)
 
             if not block_ok:
-                print("FAIL ❌")
+                print("COMPUESTO ❌")
+                composite_found = True
                 with open(f"partition_{partition_id}_composite.txt", "w") as f:
-                    f.write(f"Partition {partition_id} detected as composite.")
-                exit(0)
+                    f.write(f"Partición {partition_id} detectada como compuesta.")
+                break  # Si se encuentra compuesto, terminamos el análisis
 
-            print("So far not composite ✅")
+            print("Hasta ahora no es compuesto ✅")
 
-            # Guardar progreso de forma segura
             tmp_file = f"{progress_file}.tmp"
             with open(tmp_file, "w") as f:
                 f.write(f"number: {number}\n")
@@ -177,7 +198,6 @@ if __name__ == '__main__':
                 f.write(f"partitions: {partitions}\n")
                 f.write(f"last_completed_block: {block_num}\n")
 
-            # Reemplazo seguro con reintento
             safe_replace(tmp_file, progress_file)
 
     except KeyboardInterrupt:
@@ -186,12 +206,15 @@ if __name__ == '__main__':
 
     elapsed = time.time() - start_time
 
-    # Guardar log de la partición
     save_partition_log(partition_id, total_blocks, elapsed)
 
-    # Después de cada 100 particiones, empaquetar y limpiar logs
     if (partition_id + 1) % 100 == 0:
         package_and_cleanup_logs()
 
-    print(f"✅ Partition {partition_id} COMPLETED successfully!")
-    print(f"Total execution time: {elapsed:.2f} seconds")
+    # Mensaje final según el estado
+    if composite_found:
+        print(f"✅ ¡Partición {partition_id} COMPLETADA! Número COMPUESTO detectado.")
+    else:
+        print(f"✅ ¡Partición {partition_id} COMPLETADA con éxito! La primalidad depende del resultado de todos los bloques.")
+
+    print(f"Tiempo total de ejecución: {elapsed:.2f} segundos")
