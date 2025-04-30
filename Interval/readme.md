@@ -19,8 +19,5 @@ This repository contains two implementations of the **empirical sieve of cyclic 
 
 Both scripts use a sieve based on cyclic frequency patterns associated with numbers of the form \(6N \pm 1\), detecting prime numbers through predictive collision analysis.
 
-## Author
-
-Héctor Cárdenas Campos
 
 These files are under experimental development and are part of the ongoing validation process of the predictive approach within the sieve model.
