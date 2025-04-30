@@ -1,32 +1,3 @@
-# Criba Empírica de Frecuencias Cíclicas
-
-Este repositorio contiene dos implementaciones del modelo de **criba empírica de frecuencias cíclicas** desarrollado para la detección de números primos:
-
-- **`interval.py`**: Script optimizado con procesamiento multi-core, diseñado para ejecución local en equipos con Python instalado. Procesa intervalos grandes dividiéndolos en bloques y utilizando multiprocessing. No es compatible con Google Colab.
-- **`interval_colab.ipynb`**: Versión adaptada para ejecución interactiva en Google Colaboratory. Procesa los intervalos bloque por bloque, sin multiprocessing. Funciona también en entornos locales como Jupyter Notebook.
-
-## Cómo usar
-
-- **Ejecución local**:
-  - Ejecutar `interval.py` desde una terminal o entorno de Python instalado localmente.
-  - Requiere Python 3.8 o superior y el módulo estándar `multiprocessing`.
-
-- **Ejecución en Google Colaboratory o Jupyter**:
-  - Abrir `interval_colab.ipynb` directamente en Google Colab o en un entorno Jupyter.
-  - No se requiere instalación de paquetes adicionales. Recomendado para quienes prefieran trabajar en línea sin necesidad de instalaciones locales.
-
-## Sobre el método
-
-Ambos scripts utilizan una criba basada en patrones cíclicos de frecuencias asociados a números de la forma \(6N \pm 1\), detectando números primos mediante un análisis de colisiones predictivas.
-
-## Autor
-
-Héctor Cárdenas Campos
-
-Estos archivos están en desarrollo experimental y forman parte del proceso de validación del enfoque predictivo dentro de la criba.
-
----
-
 # Empirical Sieve of Cyclic Frequencies
 
 This repository contains two implementations of the **empirical sieve of cyclic frequencies** model developed for prime number detection:
