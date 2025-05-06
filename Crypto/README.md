@@ -1,4 +1,4 @@
-# ryptanalysis Educational Script
+# Cryptanalysis Educational Script
 
 This Python script demonstrates an **experimental approach to integer factorization**, mimicking how a basic cryptanalysis program might attempt to break RSA-style keys. The method relies on structural analysis of numbers of the form `6n ± 1`, inspired by observed patterns in the distribution of prime numbers.
 
