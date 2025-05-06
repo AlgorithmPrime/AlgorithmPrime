@@ -45,8 +45,7 @@ RSA encryption relies on the mathematical difficulty of factoring large semiprim
 | `p` | `q` | `N = p × q` |
 |-----|-----|-------------|
 | 10007 | 10009 | 100160063 |
-| 99999997 | 99999989 | 9999998600000013 |
-| 32416190071 | 32416187567 | 1050809297549059047257 |
+| 99999997 | 99999989 | 9999998600000033 |
 
 ### Invalid (will fail or misbehave):
 - `231` (3 × 7 × 11)
