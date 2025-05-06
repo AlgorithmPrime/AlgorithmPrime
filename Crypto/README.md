@@ -1,30 +1,56 @@
-# Cryptanalysis Frequency Explorer (Educational)
+# 🔐 Cryptanalysis Educational Script
 
-This project presents a conceptual Python script that emulates the exploratory behavior of a cryptanalysis tool using a custom mathematical algorithm based on number theory. Specifically, it analyzes integers of the form `6n ± 1` and attempts to identify structural patterns that can suggest factorization, using cyclical functions and collision detection.
+This Python script demonstrates an **experimental approach to integer factorization**, mimicking how a basic cryptanalysis program might attempt to break RSA-style keys. The method relies on structural analysis of numbers of the form `6n ± 1`, inspired by observed patterns in the distribution of prime numbers.
 
-⚠️ **Disclaimer:** This tool is intended **solely for educational purposes**. While it demonstrates an original approach to prime factor detection through algorithmic analysis, it is **not optimized** for production cryptographic applications. However, with further research and refinement, it may inspire future techniques in computational number theory or cryptanalysis.
+> ⚠️ **Disclaimer:** This tool is intended solely for **educational purposes**. It is not optimized for real cryptographic attacks and should not be used for malicious or production-level purposes.
 
-## Overview
+---
 
-The script `Cryptanalisis.py` defines a function called `explore_frequencies(X)`, which:
-- Accepts an integer `X` in the form `6n ± 1`.
-- Computes three cyclic functions (`f1`, `f2`, and `f3`) for values of `c`.
-- Detects a **collision** between derived values and the target structure.
-- Identifies potential factors if such a collision is found.
+## 📌 About
 
-If successful, the script prints the detected factors of `X`. If not, it suggests whether `X` may be prime based on the absence of early collisions.
+RSA encryption relies on the mathematical difficulty of factoring large semiprime numbers — that is, numbers composed of **exactly two large prime factors**. This script attempts to **recover the prime factors of a given number** `N = p × q` by analyzing frequency-like patterns and exploring numeric relationships in candidates of the form `6n ± 1`.
 
-## How it Works
+---
 
-- The logic behind the script is inspired by frequency patterns and modular arithmetic.
-- It mimics how one might approach pattern-based weaknesses in RSA-like systems, where the structure of composite numbers can sometimes be exploited.
-- The approach uses:
-  - A reduced search space (only numbers of the form `6n ± 1` are considered).
-  - Early exits upon detecting the first "collision" that implies a factorization.
+## ✅ Intended Use
 
-## Usage
+- Designed to **factor numbers of the form** `N = p × q`, where `p` and `q` are both **prime**.
+- Ideal for **semiprimes** ranging from ~10 to ~18 digits.
+- It is not guaranteed to work correctly on:
+  - Very large numbers (over ~10¹⁸).
+  - Numbers with more than two prime factors (e.g. 231, 455, 1001).
+  - Prime numbers or perfect powers.
 
-To run the script:
+---
+
+## ⚠️ Known Limitations
+
+- ❌ **Not suitable for general composite numbers**. The algorithm may return incomplete or misleading results if the number has more than two distinct prime factors.
+- ❌ May crash with a `MemoryError` if input is too large, due to internal dictionary growth.
+- ⚠️ For learning purposes only. The approach is not efficient compared to modern factorization methods.
+
+---
+
+## 🧪 Example Inputs
+
+### ✔️ Valid RSA-style semiprimes:
+| `p` | `q` | `N = p × q` |
+|-----|-----|-------------|
+| 10007 | 10009 | 100160063 |
+| 32416190071 | 32416187567 | 1050663424693739547257 |
+| 99999997 | 99999989 | 9999998600000013 |
+
+### ❌ Invalid (will fail or misbehave):
+- `231` (3 × 7 × 11)
+- `455` (5 × 7 × 13)
+- `1001` (7 × 11 × 13)
+
+---
+
+## 🚀 Usage
+
+Run the script using Python 3:
 
 ```bash
-python Cryptanalisis.py
+python cryptanalisis.py
+
