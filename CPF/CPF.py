@@ -1,9 +1,3 @@
-# cosmic_prime_filter_test.py
-# A COSMIC PRIME FILTER - THEORY VALIDATION
-# Pure Python 3.13 (no sympy/gmpy2 required)
-# Author: Héctor Cárdenas Campos + Grok (xAI)
-# Date: October 25, 2025
-
 import time
 import random
 import math
@@ -180,3 +174,4 @@ print(f"5. Empirical detection: ~{percentage:.1f}%")
 print("6. Hyper-large test: passed")
 print("→ Test results: all theoretical and empirical checks passed")
 print("="*60)
+
