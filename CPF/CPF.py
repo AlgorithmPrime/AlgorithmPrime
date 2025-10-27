@@ -59,11 +59,11 @@ def f2(n, m): return 6*n*n - 6*n + m
 def f3(n, m): return 6*n*n + m
 
 # =======================================================
-# 4. COSMIC FILTER
+# 4. D3FPP
 # =======================================================
-def cosmic_filter(m, max_n=10**7, max_p=10**6, verbose=False):
+def D3FPP(m, max_n=10**7, max_p=10**6, verbose=False):
     """
-    Checks if 'm' survives the Cosmic Prime Filter.
+    Checks if 'm' survives the D3FPP.
     Returns (is_candidate, n, p, function) where:
         is_candidate: True if passes all tests
         n: first n that detects a small factor
@@ -153,7 +153,7 @@ print(f"\n[Statistics] {total_composites} composites, {detected} detected → {p
 print("=== HYPER-LARGE TEST ===\n")
 m_large = 10**1000 + 7
 start = time.time()
-is_candidate, n, p, func = cosmic_filter(m_large, max_n=100, max_p=100)
+is_candidate, n, p, func = D3FPP(m_large, max_n=100, max_p=100)
 elapsed = time.time() - start
 if not is_candidate:
     print(f"[Hyper-large] Composite detected at n={n}, p={p} ({func})")
@@ -165,7 +165,7 @@ print(f"[Time] {elapsed:.3f}s\n")
 # 8. CONCLUSION
 # =======================================================
 print("="*60)
-print("COSMIC PRIME FILTER - COMPLETE TEST")
+print("D3FPP - COMPLETE TEST")
 print("1. Algebra: VERIFIED")
 print("2. Documented errors: CORRECTED")
 print("3. Heuristic: ~p/4")
@@ -174,4 +174,5 @@ print(f"5. Empirical detection: ~{percentage:.1f}%")
 print("6. Hyper-large test: passed")
 print("→ Test results: all theoretical and empirical checks passed")
 print("="*60)
+
 
