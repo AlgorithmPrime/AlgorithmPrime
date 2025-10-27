@@ -138,7 +138,7 @@ for i in range(100):
     m = random.choice([6*k-1, 6*k+1])
     if not is_prime(m):
         total_composites += 1
-        is_candidate, n, p, _ = cosmic_filter(m, max_n=max_n_test, max_p=10**4)
+        is_candidate, n, p, _ = D3FPP(m, max_n=max_n_test, max_p=10**4)
         if not is_candidate:
             detected += 1
     if (i+1) % 20 == 0:
@@ -174,5 +174,6 @@ print(f"5. Empirical detection: ~{percentage:.1f}%")
 print("6. Hyper-large test: passed")
 print("→ Test results: all theoretical and empirical checks passed")
 print("="*60)
+
 
 
